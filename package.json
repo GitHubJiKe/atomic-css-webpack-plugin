@@ -1,0 +1,37 @@
+{
+  "name": "atomic-css-webpack-plugin",
+  "version": "0.0.1",
+  "description": "Atomized CSS development enhancement plugin",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "default.config.js"
+  ],
+  "scripts": {
+    "serve": "webpack serve -c ./demo/webpack.config.js",
+    "build": "webpack -c ./demo/webpack.config.prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GitHubJiKe/atomic-css-webpack-plugin.git"
+  },
+  "keywords": [
+    "Atomized",
+    "CSS",
+    "Webpack Plugin"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GitHubJiKe/atomic-css-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/GitHubJiKe/atomic-css-webpack-plugin#readme",
+  "devDependencies": {
+    "@types/node": "^16.11.4",
+    "atomic-css-webpack-plugin": "^0.0.1",
+    "html-webpack-plugin": "^5.4.0",
+    "webpack": "^5.59.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.3.1"
+  }
+}
