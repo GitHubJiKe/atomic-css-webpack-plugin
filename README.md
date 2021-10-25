@@ -47,6 +47,7 @@ module.exports = {
 | ------ | ------------------------------------------------------------ | ------ | ------- |
 | config | Config file path                                             | string | ''      |
 | assets | Css asset output path (if you set 'css', atomic.css will output in css dir) | string | ''      |
+| importWay | use link or style tag import css | 'link'/'inline' | 'link' |
 
 
 
