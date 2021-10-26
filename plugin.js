@@ -41,8 +41,13 @@ class AtomicCSSWebpackPlugin {
                 compilation.emitAsset(this.getAssetsPath('/'), new sources.RawSource(this.cssContent));
                 Object.keys(assets).
                     filter(key => key.endsWith('.html')).
-                    forEach(key => this.insertStyleTag(compilation, key))
-                this.writeStaticCSSToLocal();
+                    forEach(key => {
+                        const sourceContent = assets[key].source();
+                        const [start, end] = sourceContent.split('</head>');
+                        const newContent = `${start}${this.getMiddlePart()}</head>${end}`;
+                        compilation.updateAsset(key, new sources.RawSource(newContent));
+                    })
+                fs.writeFileSync(path.resolve(__dirname, './.atomic.css'), this.cssContent);
             })
         })
     }
@@ -56,14 +61,6 @@ class AtomicCSSWebpackPlugin {
             default:
                 return `<link type="text/css" rel="stylesheet" href="${this.getAssetsPath()}">`
         }
-    }
-
-
-    insertStyleTag(compilation, key) {
-        const sourceContent = compilation.assets[key].source();
-        const [start, end] = sourceContent.split('</head>');
-        const newContent = `${start}${this.getMiddlePart()}</head>${end}`;
-        compilation.updateAsset(key, this.genSource(newContent));
     }
 
     parseCSS(config) {
@@ -84,11 +81,6 @@ class AtomicCSSWebpackPlugin {
 
         return content;
     }
-
-    writeStaticCSSToLocal() {
-        fs.writeFileSync(path.resolve(__dirname, './.atomic.css'), this.cssContent);
-    }
-
 }
 
 module.exports = AtomicCSSWebpackPlugin;
