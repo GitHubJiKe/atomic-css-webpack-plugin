@@ -34,22 +34,16 @@ class AtomicCSSWebpackPlugin {
     apply(compiler) {
         const pluginName = AtomicCSSWebpackPlugin.name;
 
-        compiler.hooks.make.tap(pluginName, (compilation) => {
+        const { Compilation, sources } = compiler.webpack;
 
-            compilation.emitAsset(this.getAssetsPath('/'), this.genSource(this.cssContent));
-
-            this.writeStaticCSSToLocal();
-        })
-
-        compiler.hooks.shouldEmit.tap(pluginName, (compilation) => {
-
-            compilation.finish(() => {
-                Object.keys(compilation.assets).
+        compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
+            compilation.hooks.processAssets.tap({ name: pluginName, stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE }, (assets) => {
+                compilation.emitAsset(this.getAssetsPath('/'), new sources.RawSource(this.cssContent));
+                Object.keys(assets).
                     filter(key => key.endsWith('.html')).
                     forEach(key => this.insertStyleTag(compilation, key))
-            });
-
-            return true;
+                this.writeStaticCSSToLocal();
+            })
         })
     }
 
@@ -70,10 +64,6 @@ class AtomicCSSWebpackPlugin {
         const [start, end] = sourceContent.split('</head>');
         const newContent = `${start}${this.getMiddlePart()}</head>${end}`;
         compilation.updateAsset(key, this.genSource(newContent));
-    }
-
-    genSource(content) {
-        return { source: () => content, size: () => content.length };
     }
 
     parseCSS(config) {
