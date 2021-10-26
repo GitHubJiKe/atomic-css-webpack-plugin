@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const parse = require('./parse')
 class AtomicCSSWebpackPlugin {
     options = { config: '', assets: '', importWay: 'link' }
     CSS_ASSET_NAME = 'atomic.css'
@@ -13,7 +14,7 @@ class AtomicCSSWebpackPlugin {
             }
         }
 
-        this.cssContent = this.parseCSS(this.getConfig());
+        this.cssContent = parse(this.getConfig());
     }
 
     getConfig() {
@@ -61,25 +62,6 @@ class AtomicCSSWebpackPlugin {
             default:
                 return `<link type="text/css" rel="stylesheet" href="${this.getAssetsPath()}">`
         }
-    }
-
-    parseCSS(config) {
-        let content = ''
-        for (const key in config) {
-            // key: prefix
-            const obj = config[key];
-            for (const prop in obj) {
-                // prop: css property
-                const conf = obj[prop];
-                for (const field in conf) {
-                    // field: postfix 
-                    const value = conf[field];
-                    content += `.${key.startsWith('$') ? '' : key}${field}{${prop}:${value}}`
-                }
-            }
-        }
-
-        return content;
     }
 }
 

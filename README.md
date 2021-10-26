@@ -6,6 +6,7 @@
 - Support completely custom configuration
 - Flexible naming rules (it's better than [Tailwindcss](https://www.tailwindcss.cn/) in this way)
 - Flexible content scope (you can custom your config file follow your need, you won't get one redundant css classes file)
+- Support utils to custom css utils
 
 With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion)experience better.
 
@@ -14,6 +15,8 @@ With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://mark
 [atomic css webpack plugin](https://atomic-css-webpack-plugin.vercel.app/)
 
 ## useage
+
+`npm i -D atomic-css-webpack-plugin`
 
 ### example
 
@@ -57,17 +60,32 @@ module.exports = {
 
 ```javascript
 module.exports = {
-      text: { // className prefix
-        color: { // css property
-            "-white": '#fff', // className postfix : css value
-            "-black": '#000',
-        },
-        'text-align': {
-            "-left": 'left',
-            "-right": 'right',
-            "-center": 'center',
+      atomic: {
+        text: { // className prefix
+            color: { // css property
+                "-white": '#fff', // className postfix : css value
+                "-black": '#000',
+            },
+            'text-align': {
+                "-left": 'left',
+                "-right": 'right',
+                "-center": 'center',
+            },
         },
     },
+    utils:{
+        link:{
+            css:{
+                color:'blue',
+                cursor:'pointer'
+            },
+            actions:{
+                hover:{
+                    color:'red'
+                }
+            }
+        }
+    }
 }
 ```
 
@@ -79,4 +97,6 @@ module.exports = {
 .text-left{text-align:left}
 .text-right{text-align:right}
 .text-center{text-align:center}
+.link{color:blue;cursor:pointer}
+.link:hover{color:red}
 ```

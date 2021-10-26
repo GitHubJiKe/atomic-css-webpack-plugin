@@ -1,3 +1,4 @@
+const parse = require('../parse')
 
 function renderApp() {
     const githubLink = document.createElement('a');
@@ -9,10 +10,10 @@ function renderApp() {
     const title = document.createElement('h1')
 
     title.innerText = 'Atomic CSS'
-    title.className = 'text-center text-red bg-yellow p-20 fs-24 fw-3 bw-2 bs-solid bc-1 br-8 mt-40'
+    title.className = 'text-center text-red bg-yellow p-20 fs-24 fw-3 bw-2 bs-solid bc-1 br-8 mt-40 active cursor-pointer'
 
     const code = document.createElement('div');
-    code.className = 'text-white bg-black fs-18 p-20 m-20  br-8 shadow-1 whitespace-nowrap overflow-x-auto'
+    code.className = 'bg-green fs-18 p-20 m-20  br-8 shadow-1 text-white'
     code.innerText = parse(require('./myconfig'))
 
     const box = document.createElement('div')
@@ -32,6 +33,7 @@ function renderApp() {
         };
     })
 
+
     document.body.appendChild(githubLink)
     document.body.appendChild(title)
     document.body.appendChild(box)
@@ -39,23 +41,5 @@ function renderApp() {
 
 }
 
-function parse(config) {
-    let content = ''
-    for (const key in config) {
-        // key: prefix
-        const obj = config[key];
-        for (const prop in obj) {
-            // prop: css property
-            const conf = obj[prop];
-            for (const field in conf) {
-                // field: postfix 
-                const value = conf[field];
-                content += `.${key.startsWith('$') ? '' : key}${field}{${prop}:${value}}\n`
-            }
-        }
-    }
-
-    return content;
-}
 
 renderApp()

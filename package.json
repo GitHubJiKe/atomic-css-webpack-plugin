@@ -1,6 +1,6 @@
 {
   "name": "atomic-css-webpack-plugin",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Atomized CSS development enhancement plugin",
   "main": "index.js",
   "files": [
@@ -8,6 +8,7 @@
     "default.config.js"
   ],
   "scripts": {
+    "test": "jest",
     "esbuild": "node ./build.js",
     "serve": "webpack serve -c ./demo/webpack.config.js",
     "build": "webpack -c ./demo/webpack.config.prod.js"
@@ -28,10 +29,12 @@
   },
   "homepage": "https://github.com/GitHubJiKe/atomic-css-webpack-plugin#readme",
   "devDependencies": {
+    "@types/jest": "^27.0.2",
     "@types/node": "^16.11.4",
     "atomic-css-webpack-plugin": "^0.0.5",
     "esbuild": "^0.13.9",
     "html-webpack-plugin": "^5.4.0",
+    "jest": "^27.3.1",
     "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1"
