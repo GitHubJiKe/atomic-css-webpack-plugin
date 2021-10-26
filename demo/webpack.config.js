@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const AtomicCSSWebpackPlugin = require('atomic-css-webpack-plugin');
+const AtomicCSSWebpackPlugin = require('../index');
 
 module.exports = {
     mode: 'development',
