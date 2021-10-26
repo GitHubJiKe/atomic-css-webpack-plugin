@@ -4,8 +4,8 @@
   "description": "Atomized CSS development enhancement plugin",
   "main": "index.js",
   "files": [
-    "index.js",
-    "default.config.js"
+    "./index.js",
+    "./default.config.js"
   ],
   "scripts": {
     "serve": "webpack serve -c ./demo/webpack.config.js",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/node": "^16.11.4",
     "atomic-css-webpack-plugin": "^0.0.2",
+    "esbuild": "^0.13.9",
     "html-webpack-plugin": "^5.4.0",
     "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1",
