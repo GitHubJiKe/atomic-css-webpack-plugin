@@ -28,8 +28,9 @@ class AtomicCSSWebpackPlugin {
         return require(path.resolve(__dirname, './default.config.js'))
     }
 
-    getAssetsPath(delimiter = '') {
-        return `${this.options.assets}${delimiter}${this.CSS_ASSET_NAME}`
+    getAssetsPath() {
+        const assets = this.options.assets
+        return `${assets.endsWith('/') ? assets : `${assets}/`}${this.CSS_ASSET_NAME}`
     }
 
     apply(compiler) {
@@ -39,7 +40,10 @@ class AtomicCSSWebpackPlugin {
 
         compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
             compilation.hooks.processAssets.tap({ name: pluginName, stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE }, (assets) => {
-                compilation.emitAsset(this.getAssetsPath('/'), new sources.RawSource(this.cssContent));
+                if (this.options.importWay === 'link') {
+                    compilation.emitAsset(this.getAssetsPath(), new sources.RawSource(this.cssContent));
+                }
+
                 Object.keys(assets).
                     filter(key => key.endsWith('.html')).
                     forEach(key => {
@@ -54,13 +58,14 @@ class AtomicCSSWebpackPlugin {
     }
 
     getMiddlePart() {
+        const linkTag = `<link type="text/css" rel="stylesheet" href="${this.getAssetsPath()}">`;
         switch (this.options.importWay) {
             case 'link':
-                return `<link type="text/css" rel="stylesheet" href="${this.getAssetsPath()}">`
+                return linkTag
             case 'inline':
                 return `<style type="text/css">${this.cssContent}</style>`;
             default:
-                return `<link type="text/css" rel="stylesheet" href="${this.getAssetsPath()}">`
+                return linkTag
         }
     }
 }
