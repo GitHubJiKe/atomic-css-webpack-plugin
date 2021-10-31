@@ -3,9 +3,9 @@
 > **Atomized CSS** development enhancement plugin. Inspired by [Tailwindcss](https://www.tailwindcss.cn/).
 
 - Framework independent
-- Support completely custom configuration
+- Support completely custom configuration (now you have to have one config file, plugin will not support default config anymore)
 - Flexible naming rules (it's better than [Tailwindcss](https://www.tailwindcss.cn/) in this way)
-- Flexible content scope (you can custom your config file follow your need, you won't get one redundant css classes file)
+- On-demanded usage(you can custom your config file follow your need, you won't get one redundant css classes file)
 - Support utils to custom css utils
 
 With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion)experience better.
@@ -21,38 +21,39 @@ With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://mark
 ### example
 
 ```javascript
-const path = require('path');
+const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const AtomicCSSWebpackPlugin = require('atomic-css-webpack-plugin');
+const AtomicCSSWebpackPlugin = require("atomic-css-webpack-plugin");
 
 module.exports = {
-    mode: 'development',
-    entry: path.resolve(__dirname, './app.js'),
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: "bundle.[hash].js",
-        clean: true
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: "Atomic CSS Webpack Plugin",
-            minify: 'auto'
-        }),
-        new AtomicCSSWebpackPlugin({ config: path.resolve(__dirname, './myconfig.js') }) // you can use your customized config file or you just use the default config
-         // new AtomicCSSWebpackPlugin(),
-    ],
-}
+  mode: "development",
+  entry: path.resolve(__dirname, "./app.js"),
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.[hash].js",
+    clean: true
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "Atomic CSS Webpack Plugin",
+      minify: "auto"
+    }),
+    new AtomicCSSWebpackPlugin({
+      config: path.resolve(__dirname, "./myconfig.js")
+    }) // you can use your customized config file or you just use the default config
+    // new AtomicCSSWebpackPlugin(),
+  ]
+};
 ```
 
 ### plugin config
 
-| Field  | Explain                                                      | Type   | Default |
-| ------ | ------------------------------------------------------------ | ------ | ------- |
-| config | Config file path                                             | string | ''      |
-| assets | Css asset output path (if you set 'css', atomic.css will output in css dir) | string | ''      |
-| importWay | use link or style tag import css | 'link'/'inline' | 'link' |
-
-
+| Field     | Explain                                                                     | Type               | Default | Required |
+| --------- | --------------------------------------------------------------------------- | ------------------ | ------- | -------- |
+| config    | Config file path                                                            | string             | ''      | true     |
+| assets    | Css asset output path (if you set 'css', atomic.css will output in css dir) | string             | ''      | false    |
+| importWay | use link or style tag import css                                            | 'link'/'inline'    | 'link'  | false    |
+| parser    | customer parse logic for your own config file                               | function(config){} | ''      | false    |
 
 ## config rules
 
@@ -60,43 +61,70 @@ module.exports = {
 
 ```javascript
 module.exports = {
-      atomic: {
-        text: { // className prefix
-            color: { // css property
-                "-white": '#fff', // className postfix : css value
-                "-black": '#000',
-            },
-            'text-align': {
-                "-left": 'left',
-                "-right": 'right',
-                "-center": 'center',
-            },
-        },
+  atomic: {
+    text: {
+      // className prefix
+      color: {
+        // css property
+        "-white": "#fff" // className postfix : css value
+      },
+      "text-align": {
+        "-center": "center"
+      }
     },
-    utils:{
-        link:{
-            css:{
-                color:'blue',
-                cursor:'pointer'
-            },
-            actions:{
-                hover:{
-                    color:'red'
-                }
-            }
-        }
+    p: {
+      "padding-left": {
+        "l-10": "10px"
+      },
+      "padding-right": {
+        "r-10": "10px"
+      },
+      "padding-left$padding-right": {
+        // if you want to set more than one property, use `$` to split
+        "x-10": "10px"
+      }
     }
-}
+  },
+  utils: {
+    link: {
+      css: {
+        color: "blue",
+        cursor: "pointer"
+      },
+      actions: {
+        hover: {
+          color: "red"
+        }
+      }
+    }
+  }
+};
 ```
 
 > with beyond config file, you will get below css classes:
 
 ```css
-.text-white{color:#fff}
-.text-black{color:#000}
-.text-left{text-align:left}
-.text-right{text-align:right}
-.text-center{text-align:center}
-.link{color:blue;cursor:pointer}
-.link:hover{color:red}
+.text-white {
+  color: #fff;
+}
+.text-center {
+  text-align: center;
+}
+.pl-10 {
+  padding-left: 10px;
+}
+.pr-10 {
+  padding-right: 10px;
+}
+.px-10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.link {
+  color: blue;
+  cursor: pointer;
+}
+.link:hover {
+  color: red;
+}
 ```
