@@ -4,7 +4,7 @@ const parser = require("./parser");
 
 class AtomicCSSWebpackPlugin {
   options = { config: "", assets: "", importWay: "link", parser: null };
-  CSS_ASSET_NAME = "atomic.css";
+  CSS_ASSET_NAME = "atomic";
   cssContent = "";
 
   constructor(options) {

@@ -1,6 +1,6 @@
 {
   "name": "atomic-css-webpack-plugin",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Atomized CSS development enhancement plugin",
   "main": "index.js",
   "files": [
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.4",
-    "atomic-css-webpack-plugin": "^0.0.5",
+    "atomic-css-webpack-plugin": "^0.1.0",
     "esbuild": "^0.13.9",
     "html-webpack-plugin": "^5.4.0",
     "jest": "^27.3.1",
