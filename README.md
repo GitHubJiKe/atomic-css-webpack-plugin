@@ -1,5 +1,7 @@
 # Atomic CSS Webpack Plugin
 
+**[Chinese Docs](./README.zh.md)**
+
 > **Atomized CSS** development enhancement plugin. Inspired by [Tailwindcss](https://www.tailwindcss.cn/).
 
 - Framework independent
