@@ -80,34 +80,32 @@ class AtomicCSSWebpackPlugin {
         );
       });
     } else if (this.options.version == '4') {
-      compiler.hooks.compilation.tap(pluginName, (compilation) => {
-        compilation.hooks.optimizeChunkAssets.tapAsync(pluginName,
-          (assets, cb) => {
-            if (this.options.importWay === "link") {
-              compilation.emitAsset(
-                this.getAssetsPath(compilation.hash),
-                this.getSource(this.cssContent)
-              );
-            }
+      compiler.hooks.emit.tapAsync(pluginName, (compilation, cb) => {
+        const assets = compilation.assets;
+        if (this.options.importWay === "link") {
+          compilation.emitAsset(
+            this.getAssetsPath(compilation.hash),
+            this.getSource(this.cssContent)
+          );
+        }
 
-            Object.keys(assets)
-              .filter((key) => key.endsWith(".html"))
-              .forEach((key) => {
-                const sourceContent = assets[key].source();
-                const [start, end] = sourceContent.split("</head>");
-                const newContent = `${start}${this.getMiddlePart(
-                  compilation.hash
-                )}</head>${end}`;
-                compilation.updateAsset(key, this.getSource(newContent));
-              });
-            fs.writeFileSync(
-              path.resolve(__dirname, "./.atomic.css"),
-              this.cssContent
-            );
-            cb()
-          }
+        Object.keys(assets)
+          .filter((key) => key.endsWith(".html"))
+          .forEach((key) => {
+            const sourceContent = assets[key].source();
+            const [start, end] = sourceContent.split("</head>");
+            const newContent = `${start}${this.getMiddlePart(
+              compilation.hash
+            )}</head>${end}`;
+            compilation.updateAsset(key, this.getSource(newContent));
+          });
+        fs.writeFileSync(
+          path.resolve(__dirname, ".atomic.css"),
+          this.cssContent
         );
-      });
+        cb()
+      }
+      );
     }
   }
 
