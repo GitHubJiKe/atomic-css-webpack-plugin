@@ -48,7 +48,9 @@ class AtomicCSSWebpackPlugin {
 
   apply(compiler) {
     const pluginName = AtomicCSSWebpackPlugin.name;
-
+    if (!this.options.version) {
+      throw new Error(`Please make sure you specify the version field.`)
+    }
     if (this.options.version == '5') {
       const { Compilation, sources } = compiler.webpack;
       compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
@@ -106,6 +108,8 @@ class AtomicCSSWebpackPlugin {
         cb()
       }
       );
+    } else {
+      throw new Error(`Doesn't support webpack version ${this.options.version}.`)
     }
   }
 

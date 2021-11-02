@@ -16,7 +16,9 @@ With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://mark
 
 ## useage
 
-`npm i -D atomic-css-webpack-plugin`
+> latest version **0.1.3**
+
+`npm i -D atomic-css-webpack-plugin@latest`
 
 ### example
 
