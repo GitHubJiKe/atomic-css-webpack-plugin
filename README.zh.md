@@ -18,7 +18,9 @@
 
 ## 使用
 
-`npm i -D atomic-css-webpack-plugin`
+> latest version **0.1.3**
+
+`npm i -D atomic-css-webpack-plugin@latest`
 
 ### 示例代码
 
