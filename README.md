@@ -51,6 +51,7 @@ module.exports = {
 | Field     | Explain                                                                     | Type               | Default | Required |
 | --------- | --------------------------------------------------------------------------- | ------------------ | ------- | -------- |
 | config    | Config file path                                                            | string             | ''      | true     |
+| versoin   | webpack big version                                                         | string/number 5 or 4 | '5'     | true     |
 | assets    | Css asset output path (if you set 'css', atomic.css will output in css dir) | string             | ''      | false    |
 | importWay | use link or style tag import css                                            | 'link'/'inline'    | 'link'  | false    |
 | parser    | customer parse logic for your own config file                               | function(config){} | ''      | false    |

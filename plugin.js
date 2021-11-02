@@ -3,7 +3,7 @@ const path = require("path");
 const parser = require("./parser");
 
 class AtomicCSSWebpackPlugin {
-  options = { config: "", assets: "", importWay: "link", parser: null };
+  options = { version: 5, config: "", assets: "", importWay: "link", parser: null };
   CSS_ASSET_NAME = "atomic";
   cssContent = "";
 
@@ -49,36 +49,73 @@ class AtomicCSSWebpackPlugin {
   apply(compiler) {
     const pluginName = AtomicCSSWebpackPlugin.name;
 
-    const { Compilation, sources } = compiler.webpack;
+    if (this.options.version == '5') {
+      const { Compilation, sources } = compiler.webpack;
+      compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
+        compilation.hooks.processAssets.tap(
+          { name: pluginName, stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE },
+          (assets) => {
+            if (this.options.importWay === "link") {
+              compilation.emitAsset(
+                this.getAssetsPath(compilation.hash),
+                new sources.RawSource(this.cssContent)
+              );
+            }
 
-    compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
-      compilation.hooks.processAssets.tap(
-        { name: pluginName, stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE },
-        (assets) => {
-          if (this.options.importWay === "link") {
-            compilation.emitAsset(
-              this.getAssetsPath(compilation.hash),
-              new sources.RawSource(this.cssContent)
+            Object.keys(assets)
+              .filter((key) => key.endsWith(".html"))
+              .forEach((key) => {
+                const sourceContent = assets[key].source();
+                const [start, end] = sourceContent.split("</head>");
+                const newContent = `${start}${this.getMiddlePart(
+                  compilation.hash
+                )}</head>${end}`;
+                compilation.updateAsset(key, new sources.RawSource(newContent));
+              });
+            fs.writeFileSync(
+              path.resolve(__dirname, "./.atomic.css"),
+              this.cssContent
             );
           }
+        );
+      });
+    } else if (this.options.version == '4') {
+      compiler.hooks.compilation.tap(pluginName, (compilation) => {
+        compilation.hooks.optimizeChunkAssets.tapAsync(pluginName,
+          (assets, cb) => {
+            if (this.options.importWay === "link") {
+              compilation.emitAsset(
+                this.getAssetsPath(compilation.hash),
+                this.getSource(this.cssContent)
+              );
+            }
 
-          Object.keys(assets)
-            .filter((key) => key.endsWith(".html"))
-            .forEach((key) => {
-              const sourceContent = assets[key].source();
-              const [start, end] = sourceContent.split("</head>");
-              const newContent = `${start}${this.getMiddlePart(
-                compilation.hash
-              )}</head>${end}`;
-              compilation.updateAsset(key, new sources.RawSource(newContent));
-            });
-          fs.writeFileSync(
-            path.resolve(__dirname, "./.atomic.css"),
-            this.cssContent
-          );
-        }
-      );
-    });
+            Object.keys(assets)
+              .filter((key) => key.endsWith(".html"))
+              .forEach((key) => {
+                const sourceContent = assets[key].source();
+                const [start, end] = sourceContent.split("</head>");
+                const newContent = `${start}${this.getMiddlePart(
+                  compilation.hash
+                )}</head>${end}`;
+                compilation.updateAsset(key, this.getSource(newContent));
+              });
+            fs.writeFileSync(
+              path.resolve(__dirname, "./.atomic.css"),
+              this.cssContent
+            );
+            cb()
+          }
+        );
+      });
+    }
+  }
+
+  getSource(content) {
+    return {
+      source: () => content,
+      size: () => content.lenght
+    }
   }
 
   getMiddlePart(hash) {
