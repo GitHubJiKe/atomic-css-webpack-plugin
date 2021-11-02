@@ -104,7 +104,7 @@ module.exports = {
 };
 ```
 
-> with beyond config file, you will get below css classes:
+> with above config file, you will get below css classes:
 
 ```css
 .text-white {
