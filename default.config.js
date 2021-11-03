@@ -88,8 +88,8 @@ module.exports = {
         "b-20": "20px"
       },
       "padding-top$padding-bottom": {
-        "y-10": "10px",
-        "y-20": "20px"
+        "y-10!": "10px",
+        "y-20!": "20px"
       },
       "padding-left$padding-right": {
         "x-10": "10px",

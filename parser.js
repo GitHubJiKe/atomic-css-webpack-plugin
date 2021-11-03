@@ -13,8 +13,14 @@ function parseAtomic(atomic) {
       for (const field in conf) {
         // field: postfix
         const value = conf[field];
-        const cssContent = props.map((p) => `${p}:${value}`).join(";");
-        content += `.${key.startsWith("$") ? "" : key}${field}{${cssContent}}`;
+        let _filed = field;
+        let isImportant = false
+        if (field.endsWith('!')) {
+          isImportant = true;
+          _filed = field.split('!')[0];
+        }
+        const cssContent = props.map((p) => `${p}:${value}${isImportant ? ' !important' : ''}`).join(";");
+        content += `.${key.startsWith("$") ? "" : key}${_filed}{${cssContent}}`;
       }
     }
   }
