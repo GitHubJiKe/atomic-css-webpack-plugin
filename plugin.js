@@ -57,54 +57,18 @@ class AtomicCSSWebpackPlugin {
         compilation.hooks.processAssets.tap(
           { name: pluginName, stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE },
           (assets) => {
-            if (this.options.importWay === "link") {
-              compilation.emitAsset(
-                this.getAssetsPath(compilation.hash),
-                new sources.RawSource(this.cssContent)
-              );
-            }
-
-            Object.keys(assets)
-              .filter((key) => key.endsWith(".html"))
-              .forEach((key) => {
-                const sourceContent = assets[key].source();
-                const [start, end] = sourceContent.split("</head>");
-                const newContent = `${start}${this.getMiddlePart(
-                  compilation.hash
-                )}</head>${end}`;
-                compilation.updateAsset(key, new sources.RawSource(newContent));
-              });
-            fs.writeFileSync(
-              path.resolve(__dirname, "./.atomic.css"),
-              this.cssContent
-            );
+            this.emitAsset(compilation, sources)
+            this.updateAssets(assets, compilation, sources);
+            this.writeFile();
           }
         );
       });
     } else if (this.options.version == '4') {
       compiler.hooks.emit.tapAsync(pluginName, (compilation, cb) => {
         const assets = compilation.assets;
-        if (this.options.importWay === "link") {
-          compilation.emitAsset(
-            this.getAssetsPath(compilation.hash),
-            this.getSource(this.cssContent)
-          );
-        }
-
-        Object.keys(assets)
-          .filter((key) => key.endsWith(".html"))
-          .forEach((key) => {
-            const sourceContent = assets[key].source();
-            const [start, end] = sourceContent.split("</head>");
-            const newContent = `${start}${this.getMiddlePart(
-              compilation.hash
-            )}</head>${end}`;
-            compilation.updateAsset(key, this.getSource(newContent));
-          });
-        fs.writeFileSync(
-          path.resolve(__dirname, ".atomic.css"),
-          this.cssContent
-        );
+        this.emitAsset(compilation)
+        this.updateAssets(assets, compilation);
+        this.writeFile();
         cb()
       }
       );
@@ -113,10 +77,43 @@ class AtomicCSSWebpackPlugin {
     }
   }
 
-  getSource(content) {
-    return {
-      source: () => content,
-      size: () => content.lenght
+  emitAsset(compilation, sources) {
+    if (this.options.importWay === "link") {
+      compilation.emitAsset(
+        this.getAssetsPath(compilation.hash),
+        this.getSource(this.cssContent, sources)
+      );
+    }
+  }
+
+  updateAssets(assets, compilation, sources) {
+    Object.keys(assets)
+      .filter((key) => key.endsWith(".html"))
+      .forEach((key) => {
+        const sourceContent = assets[key].source();
+        const [start, end] = sourceContent.split("</head>");
+        const newContent = `${start}${this.getMiddlePart(
+          compilation.hash
+        )}</head>${end}`;
+        compilation.updateAsset(key, this.getSource(newContent, sources));
+      });
+  }
+
+  writeFile() {
+    fs.writeFileSync(
+      path.resolve(__dirname, ".atomic.css"),
+      this.cssContent
+    );
+  }
+
+  getSource(content, sources) {
+    if (this.options.version == '4') {
+      return {
+        source: () => content,
+        size: () => content.lenght
+      }
+    } else if (this.options.version == '5') {
+      return new sources.RawSource(content);
     }
   }
 
