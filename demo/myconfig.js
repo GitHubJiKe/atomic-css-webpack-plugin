@@ -2,7 +2,7 @@ module.exports = {
   atomic: {
     $4: {
       width: {
-        "w-full": "10%",
+        "w-full!": "10%",
         "w-auto": "auto",
         "w-half": "50%"
       },
@@ -88,8 +88,8 @@ module.exports = {
         "b-20": "20px"
       },
       "padding-top$padding-bottom": {
-        "y-10": "10px",
-        "y-20": "20px"
+        "y-10!": "10px",
+        "y-20!": "20px"
       },
       "padding-left$padding-right": {
         "x-10": "10px",

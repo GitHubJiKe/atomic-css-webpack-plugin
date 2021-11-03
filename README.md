@@ -9,6 +9,7 @@
 - Flexible naming rules (it's better than [Tailwindcss](https://www.tailwindcss.cn/) in this way)
 - On-demanded usage(you can custom your config file follow your need, you won't get one redundant css classes file)
 - Support utils to custom css utils
+- Support `!important` (it's better than [Tailwindcss](https://www.tailwindcss.cn/))
 
 With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion)experience better.
 
@@ -18,7 +19,7 @@ With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://mark
 
 ## useage
 
-> latest version **0.1.3**
+> latest version **0.1.4**
 
 `npm i -D atomic-css-webpack-plugin@latest`
 
@@ -74,7 +75,7 @@ module.exports = {
         "-white": "#fff" // className postfix : css value
       },
       "text-align": {
-        "-center": "center"
+        "-center!": "center" // postfix with `!` you will get `!important` class
       }
     },
     p: {
@@ -113,7 +114,7 @@ module.exports = {
   color: #fff;
 }
 .text-center {
-  text-align: center;
+  text-align: center !important;
 }
 .pl-10 {
   padding-left: 10px;

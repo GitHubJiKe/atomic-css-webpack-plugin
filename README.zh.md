@@ -9,6 +9,7 @@
 - 自定义的命名规则 (这一点要优于[Tailwindcss](https://www.tailwindcss.cn/))
 - 按需配置(根据需要配置, 不会产出一个css类冗余的文件)
 - 支持配置utils
+- 支持 `!important`
 
 搭配 VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion)体验更好.
 
@@ -18,7 +19,7 @@
 
 ## 使用
 
-> latest version **0.1.3**
+> latest version **0.1.4**
 
 `npm i -D atomic-css-webpack-plugin@latest`
 
@@ -73,7 +74,7 @@ module.exports = {
         "-white": "#fff" // className 后缀 : css 值
       },
       "text-align": {
-        "-center": "center"
+        "-center!": "center" // 后缀添加英文 `!` 你就可以得到后缀 `!important`的class
       }
     },
     p: {
@@ -112,7 +113,7 @@ module.exports = {
   color: #fff;
 }
 .text-center {
-  text-align: center;
+  text-align: center !important;
 }
 .pl-10 {
   padding-left: 10px;
