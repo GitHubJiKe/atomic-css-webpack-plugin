@@ -3,7 +3,7 @@ const path = require("path");
 const parser = require("./parser");
 
 class AtomicCSSWebpackPlugin {
-  options = { version: 5, config: "", assets: "", importWay: "link", parser: null };
+  options = { version: 4, config: "", assets: "", importWay: "inline", parser: null };
   CSS_ASSET_NAME = "atomic";
   cssContent = "";
 

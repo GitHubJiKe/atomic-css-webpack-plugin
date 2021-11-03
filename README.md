@@ -19,7 +19,7 @@ With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://mark
 
 ## useage
 
-> latest version **0.1.4**
+> latest version **0.1.5**
 
 `npm i -D atomic-css-webpack-plugin@latest`
 
@@ -46,7 +46,6 @@ module.exports = {
     new AtomicCSSWebpackPlugin({
       config: path.resolve(__dirname, "./myconfig.js")
     }) // you can use your customized config file or you just use the default config
-    // new AtomicCSSWebpackPlugin(),
   ]
 };
 ```
@@ -56,10 +55,10 @@ module.exports = {
 | Field     | Explain                                                                     | Type               | Default | Required |
 | --------- | --------------------------------------------------------------------------- | ------------------ | ------- | -------- |
 | config    | Config file path                                                            | string             | ''      | true     |
-| versoin   | webpack big version                                                         | string/number 5 or 4 | '5'     | true     |
+| versoin   | webpack big version                                                         | string/number 5 or 4 | '4'     | false     |
 | assets    | Css asset output path (if you set 'css', atomic.css will output in css dir) | string             | ''      | false    |
-| importWay | use link or style tag import css                                            | 'link'/'inline'    | 'link'  | false    |
-| parser    | customer parse logic for your own config file                               | function(config){} | ''      | false    |
+| importWay | use link or style tag import css                                            | 'link'/'inline'    | 'inline'  | false    |
+| parser    | customer parse logic for your own config file                               | function(config){} | null      | false    |
 
 ## config rules
 

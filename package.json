@@ -1,11 +1,13 @@
 {
   "name": "atomic-css-webpack-plugin",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Atomized CSS development enhancement plugin",
   "main": "index.js",
+  "types": "typings.d.ts",
   "files": [
     "index.js",
-    "default.config.js"
+    "default.config.js",
+    "typings.d.ts"
   ],
   "scripts": {
     "test": "jest",
