@@ -15,6 +15,6 @@ module.exports = {
         //     minify: 'auto'
         // }),
         // new AtomicCSSWebpackPlugin(),
-        new AtomicCSSWebpackPlugin({ version: 4, config: path.resolve(__dirname, './myconfig.js'), importWay: 'link', assets: 'css' })
+        new AtomicCSSWebpackPlugin({ config: path.resolve(__dirname, './myconfig.js'), assets: 'css' })
     ],
 }
