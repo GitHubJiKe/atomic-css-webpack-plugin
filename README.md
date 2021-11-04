@@ -1,7 +1,9 @@
 # Atomic CSS Webpack Plugin
 
 **[Chinese Docs](./README.zh.md)**
-
+ <a href='https://www.npmjs.com/package/atomic-css-webpack-plugin' style='margin: 0 0.2rem;' />
+    <img src='https://img.shields.io/npm/v/atomic-css-webpack-plugin' alt='npm version' height='18'>
+  </a>
 > **Atomized CSS** development enhancement plugin. Inspired by [Tailwindcss](https://www.tailwindcss.cn/).
 
 - Framework independent

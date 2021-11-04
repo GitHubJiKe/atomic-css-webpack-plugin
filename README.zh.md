@@ -1,7 +1,9 @@
 # Atomic CSS Webpack Plugin
 
 **[英文文档](./README.md)**
-
+ <a href='https://www.npmjs.com/package/atomic-css-webpack-plugin' style='margin: 0 0.2rem;' />
+    <img src='https://img.shields.io/npm/v/atomic-css-webpack-plugin' alt='npm version' height='18'>
+  </a>
 > **原子化 CSS**开发增强插件. 灵感来自于 [Tailwindcss](https://www.tailwindcss.cn/).
 
 - 框架无关
