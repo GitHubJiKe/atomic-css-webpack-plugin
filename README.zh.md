@@ -57,6 +57,7 @@ module.exports = {
 | config    | 配置文件路径                                                            | string             | ''      | true     |
 | versoin   | 使用的 webpack 大版本号                                                         | string/number 5 or 4 | '4'     | false     |
 | assets    | css文件打包路径 (如果你设置为`css`, atomic.css 将会打包到`css`文件夹下) | string             | ''      | false    |
+| publicPath | html标签上一如的路径前缀 | string             | '/'      | false    |
 | importWay | 使用link标签一如还是style标签内联样式                                            | 'link'/'inline'    | 'inline'  | false    |
 | parser    | 可以针对你的配置文件定制解析逻辑                               | function(config){} | ''      | false    |
 

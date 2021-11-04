@@ -3,7 +3,14 @@ const path = require("path");
 const parser = require("./parser");
 
 class AtomicCSSWebpackPlugin {
-  options = { version: 4, config: "", assets: "", importWay: "inline", parser: null };
+  options = {
+    version: 4,
+    config: "",
+    assets: "",
+    publicPath: '/',
+    importWay: "inline",
+    parser: null
+  };
   CSS_ASSET_NAME = "atomic";
   cssContent = "";
 
@@ -39,11 +46,12 @@ class AtomicCSSWebpackPlugin {
     }
   }
 
-  getAssetsPath(hash) {
-    const assets = this.options.assets;
+  getAssetsPath(hash, addPublicPath = false) {
+    const { assets, publicPath } = this.options;
+    const fullAssets = addPublicPath ? `${publicPath}${assets}` : assets;
     return hash
-      ? `${assets}/${this.CSS_ASSET_NAME}.${hash}.css`
-      : `${assets}/${this.CSS_ASSET_NAME}.css`;
+      ? `${fullAssets}/${this.CSS_ASSET_NAME}.${hash}.css`
+      : `${fullAssets}/${this.CSS_ASSET_NAME}.css`;
   }
 
   apply(compiler) {
@@ -118,9 +126,7 @@ class AtomicCSSWebpackPlugin {
   }
 
   getMiddlePart(hash) {
-    const linkTag = `<link type="text/css" rel="stylesheet" href="${this.getAssetsPath(
-      hash
-    )}">`;
+    const linkTag = `<link type="text/css" rel="stylesheet" href="${this.getAssetsPath(hash, true)}">`;
     switch (this.options.importWay) {
       case "link":
         return linkTag;
