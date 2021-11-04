@@ -11,6 +11,8 @@ interface IAtomicCSSWebpackPluginOptions {
     version?: 5 | 4 | '5' | '4';
     /** css assets path, effectived when importWay equals 'link' */
     assets?: string;
+    /** publicPath */
+    publicPath?: string;
     /** css import way; default is inline */
     importWay?: "link" | "inline";
     /** custom parser function; default is null */
