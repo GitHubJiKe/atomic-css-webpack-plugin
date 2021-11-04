@@ -77,7 +77,7 @@ class AtomicCSSWebpackPlugin {
         this.emitAsset(compilation)
         this.updateAssets(assets, compilation);
         this.writeFile();
-        cb()
+        cb();
       }
       );
     } else {
@@ -118,7 +118,7 @@ class AtomicCSSWebpackPlugin {
     if (this.options.version == '4') {
       return {
         source: () => content,
-        size: () => content.lenght
+        size: () => content.length
       }
     } else if (this.options.version == '5') {
       return new sources.RawSource(content);
