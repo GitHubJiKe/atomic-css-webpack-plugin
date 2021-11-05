@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const parser = require("./parser");
+const { PurgeCSS } = require('purgecss')
 
 class AtomicCSSWebpackPlugin {
   options = {
@@ -64,7 +65,8 @@ class AtomicCSSWebpackPlugin {
       compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
         compilation.hooks.processAssets.tap(
           { name: pluginName, stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE },
-          (assets) => {
+          async (assets) => {
+            await this.purge(assets);
             this.emitAsset(compilation, sources)
             this.updateAssets(assets, compilation, sources);
             this.writeFile();
@@ -74,10 +76,12 @@ class AtomicCSSWebpackPlugin {
     } else if (this.options.version == '4') {
       compiler.hooks.emit.tapAsync(pluginName, (compilation, cb) => {
         const assets = compilation.assets;
-        this.emitAsset(compilation)
-        this.updateAssets(assets, compilation);
-        this.writeFile();
-        cb();
+        this.purge(assets).then(() => {
+          this.emitAsset(compilation)
+          this.updateAssets(assets, compilation);
+          this.writeFile();
+          cb();
+        });
       }
       );
     } else {
@@ -135,6 +139,17 @@ class AtomicCSSWebpackPlugin {
       default:
         return linkTag;
     }
+  }
+
+  async purge(assets) {
+    const content = Object.keys(assets).filter(key => key.endsWith('.js') || key.endsWith('.html')).map(key => {
+      const extension = key.split('.').pop();
+      return { raw: assets[key].source(), extension }
+    });
+
+    const purgeCSSResult = await new PurgeCSS().purge({ content, css: [{ raw: this.cssContent }] })
+
+    this.cssContent = purgeCSSResult.map(v => v.css).join('')
   }
 }
 

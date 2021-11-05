@@ -311,8 +311,8 @@ module.exports = {
     active: {
       actions: {
         hover: {
-          color: "green",
-          scale: "1"
+          color: "blue",
+          "font-size": "40px"
         }
       }
     }
