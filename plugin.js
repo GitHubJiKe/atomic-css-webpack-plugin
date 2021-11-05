@@ -74,7 +74,21 @@ class AtomicCSSWebpackPlugin {
         );
       });
     } else if (this.options.version == '4') {
+      compiler.hooks.watchRun.tap(pluginName, (c) => {
+        c.hooks.emit.tapAsync(pluginName, (compilation, cb) => {
+          console.log('run1111', this.getConfig());
+          const assets = compilation.assets;
+          this.purge(assets).then(() => {
+            this.emitAsset(compilation)
+            this.updateAssets(assets, compilation);
+            this.writeFile();
+            cb();
+          });
+        }
+        );
+      })
       compiler.hooks.emit.tapAsync(pluginName, (compilation, cb) => {
+        console.log('run222');
         const assets = compilation.assets;
         this.purge(assets).then(() => {
           this.emitAsset(compilation)
@@ -150,6 +164,8 @@ class AtomicCSSWebpackPlugin {
     const purgeCSSResult = await new PurgeCSS().purge({ content, css: [{ raw: this.cssContent }] })
 
     this.cssContent = purgeCSSResult.map(v => v.css).join('')
+
+    console.log(this.cssContent);
   }
 }
 
