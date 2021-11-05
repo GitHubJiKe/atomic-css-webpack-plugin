@@ -1,9 +1,11 @@
 # Atomic CSS Webpack Plugin
 
-**[Chinese Docs](./README.zh.md)**
  <a href='https://www.npmjs.com/package/atomic-css-webpack-plugin' style='margin: 0 0.2rem;' />
     <img src='https://img.shields.io/npm/v/atomic-css-webpack-plugin' alt='npm version' height='18'>
   </a>
+
+**[Chinese Docs](./README.zh.md)**
+
 > **Atomized CSS** development enhancement plugin. Inspired by [Tailwindcss](https://www.tailwindcss.cn/).
 
 - Framework independent
@@ -20,8 +22,6 @@ With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://mark
 [atomic css webpack plugin](https://atomic-css-webpack-plugin.vercel.app/)
 
 ## useage
-
-> latest version **0.1.5**
 
 `npm i -D atomic-css-webpack-plugin@latest`
 
