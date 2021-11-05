@@ -1,6 +1,6 @@
 {
   "name": "atomic-css-webpack-plugin",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Atomized CSS development enhancement plugin",
   "main": "index.js",
   "types": "typings.d.ts",
@@ -37,8 +37,12 @@
     "esbuild": "^0.13.9",
     "html-webpack-plugin": "^4.5.2",
     "jest": "^27.3.1",
+    "purgecss": "^4.0.3",
     "webpack": "^4.46.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1"
+  },
+  "peerDependencies": {
+    "purgecss": "^4.0.3"
   }
 }

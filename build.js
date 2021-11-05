@@ -4,6 +4,7 @@ require('esbuild').buildSync({
     platform: 'node',
     target: ['node14.17.0'],
     outfile: 'index.js',
+    external: ['purgecss'],
     minify: true,
     minifyWhitespace: true,
     minifyIdentifiers: true,
