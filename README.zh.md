@@ -14,6 +14,7 @@
 - 按需配置(根据需要配置, 不会产出一个css类冗余的文件)
 - 支持配置utils
 - 支持 `!important`
+- 使用 [purgecss](https://purgecss.com/) 移除没用到的css类
 
 搭配 VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion)体验更好.
 
@@ -134,5 +135,12 @@ module.exports = {
 }
 .link:hover {
   color: red;
+}
+```
+> 但是如果你在代码里只用到了 `text-center`, 最终你将得到如下css产物
+
+```css
+.text-center {
+  text-align: center !important;
 }
 ```

@@ -14,6 +14,7 @@
 - On-demanded usage(you can custom your config file follow your need, you won't get one redundant css classes file)
 - Support utils to custom css utils
 - Support `!important` (it's better than [Tailwindcss](https://www.tailwindcss.cn/))
+- with [purgecss](https://purgecss.com/) to remove useless css content
 
 With VSCode Plugin [「IntelliSense for CSS class names in HTML」](https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion)experience better.
 
@@ -134,5 +135,13 @@ module.exports = {
 }
 .link:hover {
   color: red;
+}
+```
+
+> but if you only used `text-center`, finally you will get css file as below
+
+```css
+.text-center {
+  text-align: center !important;
 }
 ```
