@@ -56,6 +56,8 @@ class AtomicCSSWebpackPlugin {
   }
 
   apply(compiler) {
+    const isProduction = compiler.options.mode === 'production';
+
     const pluginName = AtomicCSSWebpackPlugin.name;
     if (!this.options.version) {
       throw new Error(`Please make sure you specify the version field.`)
@@ -66,7 +68,9 @@ class AtomicCSSWebpackPlugin {
         compilation.hooks.processAssets.tap(
           { name: pluginName, stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE },
           async (assets) => {
-            await this.purge(assets);
+            if (isProduction) {
+              await this.purge(assets);
+            }
             this.emitAsset(compilation, sources)
             this.updateAssets(assets, compilation, sources);
             this.writeFile();
@@ -74,14 +78,28 @@ class AtomicCSSWebpackPlugin {
         );
       });
     } else if (this.options.version == '4') {
-      compiler.hooks.emit.tapAsync(pluginName, (compilation, cb) => {
-        const assets = compilation.assets;
-        this.purge(assets).then(() => {
+      compiler.hooks.watchRun.tap(pluginName, (c) => {
+        c.hooks.emit.tapAsync(pluginName, async (compilation, cb) => {
+          const assets = compilation.assets;
+          if (isProduction) {
+            await this.purge(assets)
+          }
           this.emitAsset(compilation)
           this.updateAssets(assets, compilation);
           this.writeFile();
           cb();
-        });
+        }
+        );
+      })
+      compiler.hooks.emit.tapAsync(pluginName, async (compilation, cb) => {
+        const assets = compilation.assets;
+        if (isProduction) {
+          await this.purge(assets)
+        }
+        this.emitAsset(compilation)
+        this.updateAssets(assets, compilation);
+        this.writeFile();
+        cb();
       }
       );
     } else {
@@ -150,6 +168,8 @@ class AtomicCSSWebpackPlugin {
     const purgeCSSResult = await new PurgeCSS().purge({ content, css: [{ raw: this.cssContent }] })
 
     this.cssContent = purgeCSSResult.map(v => v.css).join('')
+
+    console.log(this.cssContent);
   }
 }
 
