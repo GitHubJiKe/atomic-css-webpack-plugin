@@ -14,8 +14,11 @@ function renderApp() {
   title.className =
     "text-center text-red bg-yellow py-20 fs-24 fw-3 bw-2 bs-solid bc-1 br-8 mt-40 active cursor-pointer";
 
+
   const code = document.createElement("div");
+
   code.className = "bg-green fs-18 p-20 m-20  br-8 shadow-1 text-white";
+
   code.innerText = parser.parse(require("./myconfig"));
 
   const box = document.createElement("div");
@@ -33,6 +36,8 @@ function renderApp() {
   box.addEventListener("click", (e) => {
     if (e.target.nodeName === "SPAN") {
       alert(e.target.innerHTML);
+
+
     }
   });
 

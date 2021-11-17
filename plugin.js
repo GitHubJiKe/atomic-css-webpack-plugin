@@ -79,27 +79,39 @@ class AtomicCSSWebpackPlugin {
       });
     } else if (this.options.version == '4') {
       compiler.hooks.watchRun.tap(pluginName, (c) => {
-        c.hooks.emit.tapAsync(pluginName, async (compilation, cb) => {
+        c.hooks.emit.tapAsync(pluginName, (compilation, cb) => {
           const assets = compilation.assets;
           if (isProduction) {
-            await this.purge(assets)
+            this.purge(assets).then(() => {
+              this.emitAsset(compilation)
+              this.updateAssets(assets, compilation);
+              this.writeFile();
+              cb();
+            })
+          } else {
+            this.emitAsset(compilation)
+            this.updateAssets(assets, compilation);
+            this.writeFile();
+            cb();
           }
+        }
+        );
+      })
+      compiler.hooks.emit.tapAsync(pluginName, (compilation, cb) => {
+        const assets = compilation.assets;
+        if (isProduction) {
+          this.purge(assets).then(() => {
+            this.emitAsset(compilation)
+            this.updateAssets(assets, compilation);
+            this.writeFile();
+            cb();
+          })
+        } else {
           this.emitAsset(compilation)
           this.updateAssets(assets, compilation);
           this.writeFile();
           cb();
         }
-        );
-      })
-      compiler.hooks.emit.tapAsync(pluginName, async (compilation, cb) => {
-        const assets = compilation.assets;
-        if (isProduction) {
-          await this.purge(assets)
-        }
-        this.emitAsset(compilation)
-        this.updateAssets(assets, compilation);
-        this.writeFile();
-        cb();
       }
       );
     } else {
@@ -122,10 +134,11 @@ class AtomicCSSWebpackPlugin {
       .forEach((key) => {
         const sourceContent = assets[key].source();
         const [start, end] = sourceContent.split("</head>");
-        const newContent = `${start}${this.getMiddlePart(
-          compilation.hash
-        )}</head>${end}`;
-        compilation.updateAsset(key, this.getSource(newContent, sources));
+        const middle = this.getMiddlePart(compilation.hash)
+        const newContent = `${start}${middle}</head>${end}`;
+        if (!sourceContent.includes(middle)) {
+          compilation.updateAsset(key, this.getSource(newContent, sources));
+        }
       });
   }
 
@@ -168,8 +181,6 @@ class AtomicCSSWebpackPlugin {
     const purgeCSSResult = await new PurgeCSS().purge({ content, css: [{ raw: this.cssContent }] })
 
     this.cssContent = purgeCSSResult.map(v => v.css).join('')
-
-    console.log(this.cssContent);
   }
 }
 
